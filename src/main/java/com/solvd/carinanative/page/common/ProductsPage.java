@@ -1,17 +1,32 @@
 package com.solvd.carinanative.page.common;
 
+import com.solvd.carinanative.component.common.ProductComponent;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
-public class ProductsPage extends AbstractPage {
+import java.util.List;
 
-    @FindBy(xpath = "//android.widget.TextView[contains (@text, 'PRODUCTS')] ")
-    private ExtendedWebElement title;
+public abstract class ProductsPage extends AbstractPage {
 
     public ProductsPage(WebDriver driver) {
         super(driver);
-        setUiLoadedMarker(title);
     }
+
+    public abstract void addProductByIndex(int index);
+
+    public abstract CartPage pressCartButton();
+
+    public abstract String getItemTitleByIndex(int index);
+
+    public abstract void addToCartByIndex(int index);
+
+    public abstract ProductsPage sortByName();
+
+    public abstract boolean areItemsSortedByName();
+
+    public abstract ProductsPage sortByPrice();
+
+    public abstract boolean areItemsSortedByPrice();
 }
