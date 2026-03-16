@@ -5,6 +5,7 @@ import com.solvd.carinanative.page.common.ProductsPage;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -12,16 +13,18 @@ import org.openqa.selenium.support.FindBy;
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = LoginPage.class)
 public class LoginPageAndroid extends LoginPage {
 
-    @FindBy(xpath = "//android.widget.EditText[contains (@content-desc, 'test-Password')]")
+    @ExtendedFindBy(accessibilityId = "test-Password")
     private ExtendedWebElement passwordInput;
 
-    @FindBy(xpath = "//android.widget.EditText[contains (@content-desc, 'test-Username')]")
+    @ExtendedFindBy(accessibilityId = "test-Username")
     private ExtendedWebElement userNameInput;
 
-    @FindBy(xpath = "//android.view.ViewGroup[contains (@content-desc, 'test-LOGIN')]")
+    @ExtendedFindBy(accessibilityId = "test-LOGIN")
     private ExtendedWebElement loginButton;
 
-    private By errorMessage = By.xpath("//android.view.ViewGroup[contains (@content-desc, 'test-Error message')]//android.widget.TextView");
+    @ExtendedFindBy(accessibilityId = "test-Error message")
+    private ExtendedWebElement errorMessage;
+
 
     public LoginPageAndroid(WebDriver driver) {
         super(driver);
@@ -39,12 +42,12 @@ public class LoginPageAndroid extends LoginPage {
 
     @Override
     public boolean isErrorMessageDisplayed() {
-        return findExtendedWebElement(errorMessage).isDisplayed();
+        return errorMessage.isElementPresent(3);
     }
 
     @Override
     public String getErrorMessageText() {
-        return findExtendedWebElement(errorMessage).getAttribute("text");
+       return errorMessage.findExtendedWebElement(By.xpath(".//android.widget.TextView")).getAttribute("text");
     }
 
 

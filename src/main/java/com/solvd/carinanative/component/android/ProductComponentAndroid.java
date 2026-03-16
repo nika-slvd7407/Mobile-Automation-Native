@@ -4,6 +4,7 @@ import com.solvd.carinanative.component.common.ProductComponent;
 import com.zebrunner.carina.utils.android.AndroidService;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -16,10 +17,10 @@ public class ProductComponentAndroid extends ProductComponent {
     @FindBy(xpath = ".//android.widget.TextView[contains (@content-desc, 'test-Item title')]")
     private ExtendedWebElement title;
 
-    @FindBy(xpath = ".//android.view.ViewGroup[contains (@content-desc, 'test-ADD TO CART')]")
+    @ExtendedFindBy(accessibilityId = "test-ADD TO CART")
     private ExtendedWebElement addToCartButton;
 
-    @FindBy(xpath = ".//android.widget.TextView[@content-desc=\"test-Price\"]")
+    @ExtendedFindBy(accessibilityId = "test-Price")
     private ExtendedWebElement price;
 
     public ProductComponentAndroid(WebDriver driver, SearchContext searchContext) {
@@ -30,7 +31,7 @@ public class ProductComponentAndroid extends ProductComponent {
         return title.getAttribute("text");
     }
 
-    public void pressAddToCartButton() {
+    public void clickAddToCartButton() {
         addToCartButton.click();
     }
 

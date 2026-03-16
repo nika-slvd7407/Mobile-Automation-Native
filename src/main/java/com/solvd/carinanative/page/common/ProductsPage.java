@@ -22,15 +22,18 @@ public abstract class ProductsPage extends AbstractPage {
 
     public abstract void addToCartByIndex(int index);
 
-    public abstract ProductsPage sortByName();
+    public abstract ProductsPage sortBy(SortType sortType);
 
     public abstract boolean areItemsSortedByName();
-
-    public abstract ProductsPage sortByPrice();
 
     public abstract boolean areItemsSortedByPrice();
 
     public abstract GeoLocationPage openGeoLocation();
 
     public abstract WebViewPage openWebViewPage();
+
+    public enum SortType {
+        NAME,
+        PRICE
+    }
 }

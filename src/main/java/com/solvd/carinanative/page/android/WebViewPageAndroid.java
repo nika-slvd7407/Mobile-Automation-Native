@@ -5,6 +5,7 @@ import com.zebrunner.carina.utils.R;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -17,8 +18,10 @@ public class WebViewPageAndroid extends WebViewPage {
     @ExtendedFindBy(accessibilityId = "test-GO TO SITE")
     private ExtendedWebElement goToButton;
 
-    private By errorMessageBy = By.xpath("//*[@text=\"Please provide a correct https url\"]");
-
+    private By errorMessageBy = MobileBy.AndroidUIAutomator(
+            "new UiSelector().description(\"test-Error message\")" +
+                    ".childSelector(new UiSelector().classNameMatches(\".*Text.*\"))"
+    );
     public WebViewPageAndroid(WebDriver driver) {
         super(driver);
         setUiLoadedMarker(inputField);

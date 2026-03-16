@@ -2,6 +2,7 @@ package com.solvd.carinanative.page.ios;
 
 import com.solvd.carinanative.page.common.CheckoutPage;
 import com.solvd.carinanative.page.common.ConfirmationPage;
+import com.solvd.domain.User;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
@@ -32,10 +33,10 @@ public class CheckoutPageIOS extends CheckoutPage {
     }
 
     @Override
-    public void fillForm(String firstName, String lastName, String zipCode) {
-        firstNameField.type(firstName);
-        lastNameField.type(lastName);
-        zipCodeField.type(zipCode);
+    public void fillForm(User user) {
+        firstNameField.type(user.getName());
+        lastNameField.type(user.getLastName());
+        zipCodeField.type(user.getZipCode());
     }
 
     @Override

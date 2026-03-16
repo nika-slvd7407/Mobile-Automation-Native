@@ -1,6 +1,9 @@
 package com.solvd.carinanative.page.ios;
 
+import com.solvd.carinanative.component.android.NavigationSidebarComponentAndroid;
+import com.solvd.carinanative.component.ios.NavigationSidebarComponentIOS;
 import com.solvd.carinanative.component.ios.ProductComponentIOS;
+import com.solvd.carinanative.component.common.NavigationSidebarComponent;
 import com.solvd.carinanative.page.common.CartPage;
 import com.solvd.carinanative.page.common.GeoLocationPage;
 import com.solvd.carinanative.page.common.ProductsPage;
@@ -49,7 +52,7 @@ public class ProductsPageIOS extends ProductsPage {
 
     @Override
     public void addProductByIndex(int index) {
-        getProducts().get(index).pressAddToCartButton();
+        getProducts().get(index).clickAddToCartButton();
     }
 
     @Override
@@ -65,14 +68,13 @@ public class ProductsPageIOS extends ProductsPage {
 
     @Override
     public void addToCartByIndex(int index) {
-        getProducts().get(index).pressAddToCartButton();
+        getProducts().get(index).clickAddToCartButton();
     }
 
     @Override
-    public ProductsPage sortByName() {
-        By byName = By.xpath("//XCUIElementTypeOther[@name=\"Name (A to Z)\"]");
+    public ProductsPage sortBy(SortType sortType) {
         sortButton.click();
-        findExtendedWebElement(byName).click();
+        findExtendedWebElement(getSortOption(sortType)).click();
         return initPage(getDriver(), ProductsPage.class);
     }
 
@@ -87,14 +89,6 @@ public class ProductsPageIOS extends ProductsPage {
         Collections.sort(sortedTitles);
 
         return actualTitles.equals(sortedTitles);
-    }
-
-    @Override
-    public ProductsPage sortByPrice() {
-        By byPrice = By.xpath("//XCUIElementTypeOther[@name=\"Price (low to high)\"]");
-        sortButton.click();
-        findExtendedWebElement(byPrice).click();
-        return initPage(getDriver(), ProductsPage.class);
     }
 
     @Override
@@ -114,33 +108,28 @@ public class ProductsPageIOS extends ProductsPage {
 
     @Override
     public GeoLocationPage openGeoLocation() {
-        openSubMenuPage(SubMenu.GEO_LOCATION);
+        menuButton.click();
+        NavigationSidebarComponent sidebar = new NavigationSidebarComponentIOS(getDriver(), getDriver());
+        sidebar.clickMenuOption(NavigationSidebarComponent.MenuOption.GEO_LOCATION);
         return initPage(getDriver(), GeoLocationPage.class);
     }
 
     @Override
     public WebViewPage openWebViewPage() {
-        openSubMenuPage(SubMenu.WEBVIEW);
+        menuButton.click();
+        NavigationSidebarComponent sidebar = new NavigationSidebarComponentIOS(getDriver(), getDriver());
+        sidebar.clickMenuOption(NavigationSidebarComponent.MenuOption.WEBVIEW);
         return initPage(getDriver(), WebViewPage.class);
     }
 
-    private void openSubMenuPage(SubMenu menu) {
-        menuButton.click();
-        By subMenuBy = By.xpath(String.format("//XCUIElementTypeOther[@name=\"%s\"]", menu.value));
-        findExtendedWebElement(subMenuBy).click();
-    }
-
-    private enum SubMenu {
-        GEO_LOCATION("test-GEO LOCATION"),
-        WEBVIEW("test-WEBVIEW"),
-        ABOUT("test-ABOUT"),
-        LOGOUT("test-LOGOUT"),
-        RESET_APP("test-RESET APP STATE");
-
-        private final String value;
-
-        SubMenu(String value) {
-            this.value = value;
+    private By getSortOption(SortType sortType) {
+        switch (sortType) {
+            case NAME:
+                return By.xpath("//XCUIElementTypeOther[@name=\"Name (A to Z)\"]");
+            case PRICE:
+                return By.xpath("//XCUIElementTypeOther[@name=\"Price (low to high)\"]");
+            default:
+                throw new IllegalArgumentException("Unsupported sort type: " + sortType);
         }
     }
 }

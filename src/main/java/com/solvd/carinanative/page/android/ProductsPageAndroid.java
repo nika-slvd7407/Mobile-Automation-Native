@@ -1,14 +1,13 @@
 package com.solvd.carinanative.page.android;
 
+import com.solvd.carinanative.component.android.NavigationSidebarComponentAndroid;
 import com.solvd.carinanative.component.android.ProductComponentAndroid;
-import com.solvd.carinanative.component.common.ProductComponent;
+import com.solvd.carinanative.component.common.NavigationSidebarComponent;
 import com.solvd.carinanative.page.common.CartPage;
 import com.solvd.carinanative.page.common.GeoLocationPage;
 import com.solvd.carinanative.page.common.ProductsPage;
 import com.solvd.carinanative.page.common.WebViewPage;
-import com.solvd.util.MobileContextUtils;
 import com.solvd.util.WaitUtil;
-import com.zebrunner.carina.utils.android.AndroidService;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
@@ -30,7 +29,10 @@ public class ProductsPageAndroid extends ProductsPage {
     @FindBy(xpath = "//android.widget.TextView[contains (@text, 'PRODUCTS')]")
     private ExtendedWebElement title;
 
-    @FindBy(xpath = "//android.view.ViewGroup[contains (@content-desc, 'test-Cart')]")
+    @FindBy(xpath = "//*[@content-desc=\"test-Menu\"]")
+    private NavigationSidebarComponentAndroid navigationSidebarComponent;
+
+    @ExtendedFindBy(androidUIAutomator = "new UiSelector().description(\"test-Cart\")")
     private ExtendedWebElement cartButton;
 
     @FindBy(xpath = "//*[@content-desc=\"test-Modal Selector Button\"]")
@@ -51,7 +53,7 @@ public class ProductsPageAndroid extends ProductsPage {
 
     @Override
     public void addProductByIndex(int index) {
-        getProducts().get(index).pressAddToCartButton();
+        getProducts().get(index).clickAddToCartButton();
     }
 
     @Override
@@ -67,28 +69,18 @@ public class ProductsPageAndroid extends ProductsPage {
 
     @Override
     public void addToCartByIndex(int index) {
-        getProducts().get(index).pressAddToCartButton();
+        getProducts().get(index).clickAddToCartButton();
     }
 
     @Override
-    public ProductsPage sortByName() {
-        By byName = By.xpath("//*[@text=\"Name (A to Z)\"]");
+    public ProductsPage sortBy(SortType sortType) {
         sortButton.click();
-        findExtendedWebElement(byName).click();
-        return initPage(getDriver(), ProductsPage.class);
-    }
-
-    @Override
-    public ProductsPage sortByPrice() {
-        By byPrice = By.xpath("//*[@text=\"Price (low to high)\"]");
-        sortButton.click();
-        findExtendedWebElement(byPrice).click();
+        findExtendedWebElement(getSortOption(sortType)).click();
         return initPage(getDriver(), ProductsPage.class);
     }
 
     @Override
     public boolean areItemsSortedByName() {
-
         List<String> actualTitles = new ArrayList<>();
         for (ProductComponentAndroid product : getProducts()) {
             actualTitles.add(product.getTitle());
@@ -117,33 +109,33 @@ public class ProductsPageAndroid extends ProductsPage {
 
     @Override
     public GeoLocationPage openGeoLocation() {
-        openSubMenuPage(SubMenu.GEO_LOCATION);
+        navigationSidebarComponent.click();
+        getNavigationSidebar().clickMenuOption(NavigationSidebarComponent.MenuOption.GEO_LOCATION);
         return initPage(getDriver(), GeoLocationPage.class);
     }
 
     @Override
     public WebViewPage openWebViewPage() {
-        openSubMenuPage(SubMenu.WEBVIEW);
+        menuButton.click();
+        NavigationSidebarComponent sidebar = new NavigationSidebarComponentAndroid(getDriver(), getDriver());
+        sidebar.clickMenuOption(NavigationSidebarComponent.MenuOption.WEBVIEW);
         return initPage(getDriver(), WebViewPage.class);
     }
 
-    private void openSubMenuPage(SubMenu menu) {
-        menuButton.click();
-        By subMenuBy = By.xpath(String.format("//*[@content-desc=\"%s\"]", menu.value));
-        findExtendedWebElement(subMenuBy).click();
-    }
 
-    private enum SubMenu {
-        GEO_LOCATION("test-GEO LOCATION"),
-        WEBVIEW("test-WEBVIEW"),
-        ABOUT("test-ABOUT"),
-        LOGOUT("test-LOGOUT"),
-        RESET_APP("test-RESET APP STATE");
-
-        private final String value;
-
-        SubMenu(String value) {
-            this.value = value;
+    private By getSortOption(SortType sortType) {
+        switch (sortType) {
+            case NAME:
+                return By.xpath("//*[@text='Name (A to Z)']");
+            case PRICE:
+                return By.xpath("//*[@text='Price (low to high)']");
+            default:
+                throw new IllegalArgumentException("Unsupported sort type: " + sortType);
         }
     }
+
+    public NavigationSidebarComponentAndroid getNavigationSidebar() {
+        return new NavigationSidebarComponentAndroid(getDriver());
+    }
+
 }

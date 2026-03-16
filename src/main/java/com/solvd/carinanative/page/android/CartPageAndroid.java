@@ -5,7 +5,7 @@ import com.solvd.carinanative.page.common.CheckoutPage;
 import com.solvd.util.WaitUtil;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import org.openqa.selenium.By;
+import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
@@ -18,9 +18,9 @@ public class CartPageAndroid extends CartPage {
     private ExtendedWebElement cartPageName;
 
     @FindBy(xpath = " //android.view.ViewGroup[@content-desc='test-Description']/android.widget.TextView[1]")
-    private List<ExtendedWebElement> cartItems;
+    private List<ExtendedWebElement> productNames;
 
-    @FindBy(xpath = "//*[contains (@text, 'CHECKOUT')]")
+    @ExtendedFindBy(accessibilityId = "test-CHECKOUT")
     private ExtendedWebElement checkoutButton;
 
     public CartPageAndroid(WebDriver driver) {
@@ -28,9 +28,9 @@ public class CartPageAndroid extends CartPage {
         setUiLoadedMarker(cartPageName);
     }
 
-    public List<ExtendedWebElement> getCartItems() {
-        WaitUtil.waitForElementsListNotEmpty(cartItems,10,getDriver());
-        return cartItems;
+    public List<ExtendedWebElement> getProductNames() {
+        WaitUtil.waitForElementsListNotEmpty(productNames,10,getDriver());
+        return productNames;
     }
 
     @Override
@@ -40,6 +40,6 @@ public class CartPageAndroid extends CartPage {
     }
 
     public String getCartItemByIndex(int index){
-        return getCartItems().get(index).getAttribute("name");
+        return getProductNames().get(index).getAttribute("name");
     }
 }

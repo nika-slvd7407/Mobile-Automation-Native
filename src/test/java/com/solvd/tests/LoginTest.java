@@ -1,38 +1,46 @@
 package com.solvd.tests;
 
-import com.solvd.carinanative.page.common.BasePage;
 import com.solvd.carinanative.page.common.LoginPage;
 import com.solvd.carinanative.page.common.ProductsPage;
 import com.zebrunner.carina.utils.R;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class LoginTest extends BaseTest {
 
+    private static final String CORRECT_USERNAME = R.TESTDATA.get("CORRECT_USERNAME");
     private static final String CORRECT_PASSWORD = R.TESTDATA.get("CORRECT_PASSWORD");
     private static final String INCORRECT_USERNAME = R.TESTDATA.get("INCORRECT_USERNAME");
-    private static final String INCORRECT_PASSWORD = R.TESTDATA.get("INCORRECT_PASSWORD");
     private static final String LOCKED_OUT_USERNAME = R.TESTDATA.get("LOCKED_OUT_USERNAME");
+    private static final String ERROR_MESSAGE_WRONG_INPUT = R.TESTDATA.get("ERROR_MESSAGE_WRONG_INPUT");
+    private static final String ERROR_MESSAGE_LOCKED_OUT = R.TESTDATA.get("ERROR_MESSAGE_LOCKED_OUT");;
 
-    @Test(description = "Test for correct login functionality")
-    public void verifyLoginWithCorrectCredentials() {
-        ProductsPage productsPage = login();
-        Assert.assertTrue(productsPage.isPageOpened(), "Products page is not opened after login");
+
+    @DataProvider(name = "loginDataProvider")
+    public Object[][] loginDataProvider() {
+        return new Object[][]{
+                {CORRECT_USERNAME, CORRECT_PASSWORD, true, ""},
+                {INCORRECT_USERNAME, CORRECT_PASSWORD, false, ERROR_MESSAGE_WRONG_INPUT},
+                {LOCKED_OUT_USERNAME, CORRECT_PASSWORD, false, ERROR_MESSAGE_LOCKED_OUT}
+        };
     }
 
-    @Test(description = "Test for incorrect login functionality")
-    public void verifyInabilityToLoginWithIncorrectCredentials() {
+    @Test(dataProvider = "loginDataProvider", description = "Test login functionality")
+    public void verifyLogin(String username, String password, boolean expectedSuccess, String expectedErrorContains) {
         LoginPage loginPage = openLoginPage();
-        loginPage.login(INCORRECT_USERNAME, INCORRECT_PASSWORD);
-        Assert.assertTrue(loginPage.isErrorMessageDisplayed(), "Error message is not shown for incorrect login");
-    }
+        loginPage.login(username, password);
 
-    @Test(description = "Test for incorrect login functionality")
-    public void verifyInabilityToLoginWithUsersLockedOutCredentials() {
-        LoginPage loginPage = openLoginPage();
-        loginPage.login(LOCKED_OUT_USERNAME, CORRECT_PASSWORD);
-        String errorMessageText = loginPage.getErrorMessageText();
+        if (expectedSuccess) {
+            ProductsPage productsPage = initPage(getDriver(), ProductsPage.class);
+            Assert.assertTrue(productsPage.isPageOpened(), "products page is not opened after login");
 
-        Assert.assertTrue(errorMessageText.contains("locked out"), "Error message is not shown for locked out credentials login");
+        } else {
+
+            Assert.assertTrue(loginPage.isErrorMessageDisplayed(), "error message is not shown");
+
+            String errorMessageText = loginPage.getErrorMessageText();
+            Assert.assertTrue(errorMessageText.contains(expectedErrorContains), "error message does not contain expected text: " + expectedErrorContains);
+        }
     }
 }

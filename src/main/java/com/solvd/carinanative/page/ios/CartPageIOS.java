@@ -6,7 +6,6 @@ import com.solvd.util.WaitUtil;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
@@ -30,7 +29,7 @@ public class CartPageIOS extends CartPage {
         setUiLoadedMarker(cartPageName);
     }
 
-    public List<ExtendedWebElement> getCartItems() {
+    public List<ExtendedWebElement> getProductNames() {
         WaitUtil.waitForElementsListNotEmpty(cartItems,10,getDriver());
         return cartItems;
     }
@@ -42,6 +41,6 @@ public class CartPageIOS extends CartPage {
     }
 
     public String getCartItemByIndex(int index){
-        return getCartItems().get(index).getAttribute("name");
+        return getProductNames().get(index).getAttribute("name");
     }
 }

@@ -2,8 +2,10 @@ package com.solvd.carinanative.page.android;
 
 import com.solvd.carinanative.page.common.CheckoutPage;
 import com.solvd.carinanative.page.common.ConfirmationPage;
+import com.solvd.domain.User;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -12,16 +14,16 @@ import org.openqa.selenium.support.FindBy;
 public class CheckoutPageAndroid extends CheckoutPage {
 
 
-    @FindBy(xpath = "//*[contains (@text, 'First Name')]")
+    @ExtendedFindBy(accessibilityId = "test-First Name")
     private ExtendedWebElement firstNameField;
 
-    @FindBy(xpath = "//*[contains (@text, 'Last Name')]")
+    @ExtendedFindBy(accessibilityId = "test-Last Name")
     private ExtendedWebElement lastNameField;
 
-    @FindBy(xpath = "//*[contains (@text, 'Zip/Postal Code')]")
+    @ExtendedFindBy(accessibilityId = "test-Zip/Postal Code")
     private ExtendedWebElement zipCodeField;
 
-    @FindBy(xpath = "//*[contains (@text, 'CONTINUE')]")
+    @ExtendedFindBy(accessibilityId = "test-CONTINUE")
     private ExtendedWebElement continueButton;
 
     private final By errorMessege = By.xpath("//*[contains (@content-desc, 'test-Error message')]");
@@ -32,10 +34,10 @@ public class CheckoutPageAndroid extends CheckoutPage {
     }
 
     @Override
-    public void fillForm(String firstName, String lastName, String zipCode) {
-      firstNameField.type(firstName);
-      lastNameField.type(lastName);
-      zipCodeField.type(zipCode);
+    public void fillForm(User user) {
+      firstNameField.type(user.getName());
+      lastNameField.type(user.getLastName());
+      zipCodeField.type(user.getZipCode());
     }
 
     @Override

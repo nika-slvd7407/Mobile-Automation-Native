@@ -14,7 +14,7 @@ public abstract class CartPage extends AbstractPage {
 
     public abstract String getCartItemByIndex(int index);
 
-    public abstract List<ExtendedWebElement> getCartItems();
+    public abstract List<ExtendedWebElement> getProductNames();
 
     public abstract CheckoutPage pressCheckoutButton();
 }

@@ -6,13 +6,14 @@ import com.zebrunner.carina.utils.android.AndroidService;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.utils.mobile.IMobileUtils;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = ConfirmationPage.class)
 public class ConfirmationPageAndroid extends ConfirmationPage {
 
-    @FindBy(xpath = "//*[contains (@text, 'FINISH')]")
+    @ExtendedFindBy(accessibilityId = "test-FINISH")
     private ExtendedWebElement finishButton;
 
     public ConfirmationPageAndroid(WebDriver driver) {
@@ -22,8 +23,7 @@ public class ConfirmationPageAndroid extends ConfirmationPage {
 
     @Override
     public NotificationPage pressFinishButton() {
-        AndroidService androidService = new AndroidService();
-        androidService.swipe(finishButton);
+        swipe(finishButton);
         finishButton.click();
         return initPage(getDriver(), NotificationPage.class);
     }

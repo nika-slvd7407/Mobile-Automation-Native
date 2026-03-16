@@ -18,7 +18,7 @@ public abstract class ProductComponent extends AbstractUIObject {
 
     public abstract String getTitle();
 
-    public abstract void pressAddToCartButton();
+    public abstract void clickAddToCartButton();
 
     public abstract BigDecimal getPrice();
 }

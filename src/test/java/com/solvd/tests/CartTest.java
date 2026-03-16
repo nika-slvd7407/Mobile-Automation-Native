@@ -5,6 +5,7 @@ import com.solvd.carinanative.page.common.CheckoutPage;
 import com.solvd.carinanative.page.common.ConfirmationPage;
 import com.solvd.carinanative.page.common.NotificationPage;
 import com.solvd.carinanative.page.common.ProductsPage;
+import com.solvd.testUtil.UserService;
 import com.zebrunner.carina.utils.R;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -12,10 +13,6 @@ import org.testng.annotations.Test;
 public class CartTest extends BaseTest {
 
     private static final int INDEX = 0;
-
-    private static final String FIRST_NAME = R.TESTDATA.get("FIRST_NAME");
-    private static final String LAST_NAME = R.TESTDATA.get("LAST_NAME");
-    private static final String ZIP_CODE = R.TESTDATA.get("ZIP_CODE");
 
     @Test(description = "add item to cart and verify that its present there ")
     public void verifyAddingItemToCart() {
@@ -38,7 +35,7 @@ public class CartTest extends BaseTest {
         CartPage cartPage = productsPage.pressCartButton();
         CheckoutPage checkoutPage = cartPage.pressCheckoutButton();
 
-        checkoutPage.fillForm(FIRST_NAME, LAST_NAME, ZIP_CODE);
+        checkoutPage.fillForm(UserService.getUser());
        NotificationPage notificationPage = checkoutPage.pressContinue().pressFinishButton();
 
        Assert.assertTrue(notificationPage.isPageOpened(), "final confirmation page is not opened");
@@ -52,7 +49,7 @@ public class CartTest extends BaseTest {
         CartPage cartPage = productsPage.pressCartButton();
         CheckoutPage checkoutPage = cartPage.pressCheckoutButton();
 
-        checkoutPage.fillForm("", LAST_NAME, ZIP_CODE);
+        checkoutPage.fillForm(UserService.getUser());
         checkoutPage.pressContinue();
 
         Assert.assertTrue(checkoutPage.isErrorMessagePresent(), "error message is not present");

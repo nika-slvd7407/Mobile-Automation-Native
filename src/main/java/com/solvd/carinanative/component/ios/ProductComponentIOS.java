@@ -13,13 +13,13 @@ import java.math.BigDecimal;
 @DeviceType(pageType = DeviceType.Type.IOS_PHONE, parentClass = ProductComponent.class)
 public class ProductComponentIOS extends ProductComponent {
 
-    @FindBy(xpath = ".//*/*[1]/*[2]")
+    @FindBy(xpath = ".//XCUIElementTypeOther[@name='test-Description']")
     private ExtendedWebElement title;
 
     @FindBy(xpath = ".//XCUIElementTypeOther[@name=\"test-ADD TO CART\"]")
     private ExtendedWebElement addToCartButton;
 
-    @FindBy(xpath = ".//*/*[2]/*[2]")
+    @FindBy(xpath = ".//XCUIElementTypeStaticText[@name='test-Price']")
     private ExtendedWebElement price;
 
     public ProductComponentIOS(WebDriver driver, SearchContext searchContext) {
@@ -30,7 +30,7 @@ public class ProductComponentIOS extends ProductComponent {
         return title.getAttribute("value");
     }
 
-    public void pressAddToCartButton() {
+    public void clickAddToCartButton() {
         addToCartButton.click();
     }
 
