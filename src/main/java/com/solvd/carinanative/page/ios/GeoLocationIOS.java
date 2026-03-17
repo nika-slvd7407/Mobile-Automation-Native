@@ -26,13 +26,11 @@ public class GeoLocationIOS extends GeoLocationPage {
 
     @Override
     public String getLatitude() {
-        latitude.assertElementPresent(10);
         return latitude.getAttribute("value");
     }
 
     @Override
     public String getLongitude() {
-        longitude.assertElementPresent(10);
         return longitude.getAttribute("value");
     }
 

@@ -49,7 +49,7 @@ public class CartTest extends BaseTest {
         CartPage cartPage = productsPage.pressCartButton();
         CheckoutPage checkoutPage = cartPage.pressCheckoutButton();
 
-        checkoutPage.fillForm(UserService.getUser());
+        checkoutPage.fillForm(UserService.getIncorrectUser());
         checkoutPage.pressContinue();
 
         Assert.assertTrue(checkoutPage.isErrorMessagePresent(), "error message is not present");

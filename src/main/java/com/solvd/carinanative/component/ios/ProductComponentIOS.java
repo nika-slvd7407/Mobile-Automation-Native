@@ -4,6 +4,7 @@ import com.solvd.carinanative.component.common.ProductComponent;
 import com.zebrunner.carina.utils.android.AndroidService;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -13,13 +14,17 @@ import java.math.BigDecimal;
 @DeviceType(pageType = DeviceType.Type.IOS_PHONE, parentClass = ProductComponent.class)
 public class ProductComponentIOS extends ProductComponent {
 
-    @FindBy(xpath = ".//XCUIElementTypeOther[@name='test-Description']")
+    @FindBy(xpath = ".//*/*[1]/*[2]")
     private ExtendedWebElement title;
 
-    @FindBy(xpath = ".//XCUIElementTypeOther[@name=\"test-ADD TO CART\"]")
+    @ExtendedFindBy(accessibilityId = "test-ADD TO CART")
     private ExtendedWebElement addToCartButton;
 
-    @FindBy(xpath = ".//XCUIElementTypeStaticText[@name='test-Price']")
+    //those price/title xpath are the best i can do))
+    // there are no parameters to aaccess those tegs normally
+    // ik that this is terrible practice
+
+    @FindBy(xpath = ".//*/*[2]/*[2]")
     private ExtendedWebElement price;
 
     public ProductComponentIOS(WebDriver driver, SearchContext searchContext) {

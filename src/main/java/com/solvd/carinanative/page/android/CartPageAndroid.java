@@ -17,7 +17,7 @@ public class CartPageAndroid extends CartPage {
     @FindBy(xpath = "//android.widget.TextView[contains (@text, 'YOUR CART')]")
     private ExtendedWebElement cartPageName;
 
-    @FindBy(xpath = " //android.view.ViewGroup[@content-desc='test-Description']/android.widget.TextView[1]")
+    @ExtendedFindBy(androidUIAutomator = "new UiSelector().description(\"test-Description\").childSelector(new UiSelector().classNameMatches(\".*Text.*\"))")
     private List<ExtendedWebElement> productNames;
 
     @ExtendedFindBy(accessibilityId = "test-CHECKOUT")
@@ -29,7 +29,7 @@ public class CartPageAndroid extends CartPage {
     }
 
     public List<ExtendedWebElement> getProductNames() {
-        WaitUtil.waitForElementsListNotEmpty(productNames,10,getDriver());
+        WaitUtil.waitForElementsListNotEmpty(productNames, 10, getDriver());
         return productNames;
     }
 
@@ -39,7 +39,7 @@ public class CartPageAndroid extends CartPage {
         return initPage(getDriver(), CheckoutPage.class);
     }
 
-    public String getCartItemByIndex(int index){
+    public String getCartItemByIndex(int index) {
         return getProductNames().get(index).getAttribute("name");
     }
 }

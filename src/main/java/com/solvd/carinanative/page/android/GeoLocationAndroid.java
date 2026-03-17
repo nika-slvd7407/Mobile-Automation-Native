@@ -25,13 +25,11 @@ public class GeoLocationAndroid extends GeoLocationPage {
 
     @Override
     public String getLatitude() {
-        latitude.assertElementPresent(10);
         return latitude.getText();
     }
 
     @Override
     public String getLongitude() {
-        longitude.assertElementPresent(10);
         return longitude.getText();
     }
 

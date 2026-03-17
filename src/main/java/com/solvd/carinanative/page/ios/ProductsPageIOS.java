@@ -1,6 +1,5 @@
 package com.solvd.carinanative.page.ios;
 
-import com.solvd.carinanative.component.android.NavigationSidebarComponentAndroid;
 import com.solvd.carinanative.component.ios.NavigationSidebarComponentIOS;
 import com.solvd.carinanative.component.ios.ProductComponentIOS;
 import com.solvd.carinanative.component.common.NavigationSidebarComponent;
@@ -8,7 +7,6 @@ import com.solvd.carinanative.page.common.CartPage;
 import com.solvd.carinanative.page.common.GeoLocationPage;
 import com.solvd.carinanative.page.common.ProductsPage;
 import com.solvd.carinanative.page.common.WebViewPage;
-import com.solvd.util.MobileContextUtils;
 import com.solvd.util.WaitUtil;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
@@ -37,8 +35,11 @@ public class ProductsPageIOS extends ProductsPage {
     @FindBy(xpath = "//*[@name=\"test-Modal Selector Button\"]/*/*")
     private ExtendedWebElement sortButton;
 
-    @ExtendedFindBy(accessibilityId = "test-Menu")
+    @FindBy(xpath = "//XCUIElementTypeWindow/*")
     private ExtendedWebElement menuButton;
+
+    @FindBy(xpath = "//XCUIElementTypeWindow/*")
+    private NavigationSidebarComponentIOS navigationSidebarComponent;
 
     public ProductsPageIOS(WebDriver driver) {
         super(driver);
@@ -108,17 +109,13 @@ public class ProductsPageIOS extends ProductsPage {
 
     @Override
     public GeoLocationPage openGeoLocation() {
-        menuButton.click();
-        NavigationSidebarComponent sidebar = new NavigationSidebarComponentIOS(getDriver(), getDriver());
-        sidebar.clickMenuOption(NavigationSidebarComponent.MenuOption.GEO_LOCATION);
+        navigationSidebarComponent.openMenuItem(NavigationSidebarComponent.MenuOption.GEO_LOCATION);
         return initPage(getDriver(), GeoLocationPage.class);
     }
 
     @Override
     public WebViewPage openWebViewPage() {
-        menuButton.click();
-        NavigationSidebarComponent sidebar = new NavigationSidebarComponentIOS(getDriver(), getDriver());
-        sidebar.clickMenuOption(NavigationSidebarComponent.MenuOption.WEBVIEW);
+        navigationSidebarComponent.openMenuItem(NavigationSidebarComponent.MenuOption.WEBVIEW);
         return initPage(getDriver(), WebViewPage.class);
     }
 

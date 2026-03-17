@@ -13,4 +13,12 @@ public class UserService {
         return user;
     }
 
+    public static User getIncorrectUser() {
+        User user = new User();
+        user.setName("");
+        user.setLastName(R.TESTDATA.get("LAST_NAME"));
+        user.setZipCode(R.TESTDATA.get("ZIP_CODE"));
+        return user;
+    }
+
 }

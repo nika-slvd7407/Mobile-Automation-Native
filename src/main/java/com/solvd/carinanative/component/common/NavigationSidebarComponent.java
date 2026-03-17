@@ -1,5 +1,6 @@
 package com.solvd.carinanative.component.common;
 
+import com.solvd.carinanative.page.common.UtilsPage;
 import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
@@ -14,7 +15,7 @@ public abstract class NavigationSidebarComponent extends AbstractUIObject {
         RESET_APP
     }
 
-    public abstract void clickMenuOption(MenuOption option);
+    public abstract void openMenuItem(MenuOption option);
 
     public NavigationSidebarComponent(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);

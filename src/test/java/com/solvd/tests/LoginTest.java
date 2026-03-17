@@ -36,9 +36,7 @@ public class LoginTest extends BaseTest {
             Assert.assertTrue(productsPage.isPageOpened(), "products page is not opened after login");
 
         } else {
-
             Assert.assertTrue(loginPage.isErrorMessageDisplayed(), "error message is not shown");
-
             String errorMessageText = loginPage.getErrorMessageText();
             Assert.assertTrue(errorMessageText.contains(expectedErrorContains), "error message does not contain expected text: " + expectedErrorContains);
         }

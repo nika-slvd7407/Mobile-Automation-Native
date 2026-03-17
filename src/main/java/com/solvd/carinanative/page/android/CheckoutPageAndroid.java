@@ -13,7 +13,6 @@ import org.openqa.selenium.support.FindBy;
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = CheckoutPage.class)
 public class CheckoutPageAndroid extends CheckoutPage {
 
-
     @ExtendedFindBy(accessibilityId = "test-First Name")
     private ExtendedWebElement firstNameField;
 
@@ -26,7 +25,8 @@ public class CheckoutPageAndroid extends CheckoutPage {
     @ExtendedFindBy(accessibilityId = "test-CONTINUE")
     private ExtendedWebElement continueButton;
 
-    private final By errorMessege = By.xpath("//*[contains (@content-desc, 'test-Error message')]");
+    @FindBy(xpath = "//*[contains (@content-desc, 'test-Error message')]")
+    private ExtendedWebElement errorMessege;
 
     public CheckoutPageAndroid(WebDriver driver) {
         super(driver);
@@ -48,6 +48,6 @@ public class CheckoutPageAndroid extends CheckoutPage {
 
     @Override
     public boolean isErrorMessagePresent() {
-       return findExtendedWebElement(errorMessege).isVisible();
+       return errorMessege.isVisible();
     }
 }

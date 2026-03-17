@@ -1,9 +1,12 @@
 package com.solvd.carinanative.component.android;
 
 import com.solvd.carinanative.component.common.NavigationSidebarComponent;
+import com.solvd.carinanative.page.common.UtilsPage;
 import com.solvd.util.MobileContextUtils;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import com.zebrunner.carina.webdriver.gui.AbstractPage;
+import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
@@ -17,29 +20,29 @@ public class NavigationSidebarComponentAndroid extends NavigationSidebarComponen
         super(driver, searchContext);
     }
 
-    public NavigationSidebarComponentAndroid(WebDriver driver) {
-        super(driver);
-    }
+    @ExtendedFindBy(accessibilityId = "test-%s")
+    private ExtendedWebElement menuContent;
 
-    public void clickMenuOption(MenuOption option) {
-        String value = getMenuValue(option);
-        By locator = By.xpath(String.format(".//*[@content-desc=\"%s\"]", value));
-        WebElement element = getDriver().findElement(locator);
-        element.click();
+    @ExtendedFindBy(accessibilityId = "test-Menu")
+    private ExtendedWebElement menuButton;
+
+    public void openMenuItem(MenuOption item) {
+        menuButton.click();
+        menuContent.format(getMenuValue(item)).click();
     }
 
     private String getMenuValue(MenuOption option) {
         switch (option) {
             case GEO_LOCATION:
-                return "test-GEO LOCATION";
+                return "GEO LOCATION";
             case WEBVIEW:
-                return "test-WEBVIEW";
+                return "WEBVIEW";
             case ABOUT:
-                return "test-ABOUT";
+                return "ABOUT";
             case LOGOUT:
-                return "test-LOGOUT";
+                return "LOGOUT";
             case RESET_APP:
-                return "test-RESET APP STATE";
+                return "RESET APP STATE";
             default:
                 throw new IllegalArgumentException("Unsupported menu option: " + option);
         }

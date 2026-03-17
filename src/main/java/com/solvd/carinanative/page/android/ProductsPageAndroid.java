@@ -26,10 +26,10 @@ public class ProductsPageAndroid extends ProductsPage {
     @FindBy(xpath = "//android.view.ViewGroup[contains (@content-desc, 'test-Item')]")
     private List<ProductComponentAndroid> products;
 
-    @FindBy(xpath = "//android.widget.TextView[contains (@text, 'PRODUCTS')]")
+    @ExtendedFindBy(androidUIAutomator = "new UiSelector().description(\"test-Cart drop zone\").childSelector(new UiSelector().className(\"android.widget.TextView\"))")
     private ExtendedWebElement title;
 
-    @FindBy(xpath = "//*[@content-desc=\"test-Menu\"]")
+    @FindBy(id = "android:id/content")
     private NavigationSidebarComponentAndroid navigationSidebarComponent;
 
     @ExtendedFindBy(androidUIAutomator = "new UiSelector().description(\"test-Cart\")")
@@ -109,16 +109,13 @@ public class ProductsPageAndroid extends ProductsPage {
 
     @Override
     public GeoLocationPage openGeoLocation() {
-        navigationSidebarComponent.click();
-        getNavigationSidebar().clickMenuOption(NavigationSidebarComponent.MenuOption.GEO_LOCATION);
+        navigationSidebarComponent.openMenuItem(NavigationSidebarComponent.MenuOption.GEO_LOCATION);
         return initPage(getDriver(), GeoLocationPage.class);
     }
 
     @Override
     public WebViewPage openWebViewPage() {
-        menuButton.click();
-        NavigationSidebarComponent sidebar = new NavigationSidebarComponentAndroid(getDriver(), getDriver());
-        sidebar.clickMenuOption(NavigationSidebarComponent.MenuOption.WEBVIEW);
+        navigationSidebarComponent.openMenuItem(NavigationSidebarComponent.MenuOption.WEBVIEW);
         return initPage(getDriver(), WebViewPage.class);
     }
 
@@ -132,10 +129,6 @@ public class ProductsPageAndroid extends ProductsPage {
             default:
                 throw new IllegalArgumentException("Unsupported sort type: " + sortType);
         }
-    }
-
-    public NavigationSidebarComponentAndroid getNavigationSidebar() {
-        return new NavigationSidebarComponentAndroid(getDriver());
     }
 
 }
