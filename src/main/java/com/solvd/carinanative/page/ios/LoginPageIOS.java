@@ -2,6 +2,7 @@ package com.solvd.carinanative.page.ios;
 
 import com.solvd.carinanative.page.common.LoginPage;
 import com.solvd.carinanative.page.common.ProductsPage;
+import com.solvd.domain.UserAccount;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
@@ -29,9 +30,9 @@ public class LoginPageIOS extends LoginPage {
     }
 
     @Override
-    public ProductsPage login(String userName, String password) {
-        userNameInput.type(userName);
-        passwordInput.type(password);
+    public ProductsPage login(UserAccount account) {
+        userNameInput.type(account.getUsername());
+        passwordInput.type(account.getPassword());
         loginButton.click();
         return initPage(getDriver(), ProductsPage.class);
     }

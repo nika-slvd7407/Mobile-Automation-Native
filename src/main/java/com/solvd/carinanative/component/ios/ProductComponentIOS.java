@@ -41,7 +41,7 @@ public class ProductComponentIOS extends ProductComponent {
 
     @Override
     public BigDecimal getPrice() {
-        androidService.swipe(price);
+        swipe(price);
 
         String raw = price.getAttribute("value").replace("$", "").trim();
         return new BigDecimal(raw);

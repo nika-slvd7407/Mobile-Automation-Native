@@ -1,5 +1,6 @@
 package com.solvd.carinanative.page.common;
 
+import com.solvd.domain.UserAccount;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import org.openqa.selenium.By;
@@ -12,7 +13,7 @@ public abstract class LoginPage extends AbstractPage {
         super(driver);
     }
 
-    public abstract ProductsPage login(String userName, String password);
+    public abstract ProductsPage login(UserAccount account);
 
     public abstract boolean isErrorMessageDisplayed();
 

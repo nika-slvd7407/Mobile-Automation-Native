@@ -28,7 +28,7 @@ public class ProductComponentAndroid extends ProductComponent {
     }
 
     public String getTitle() {
-        return title.getAttribute("text");
+        return title.getText();
     }
 
     public void clickAddToCartButton() {
@@ -37,8 +37,7 @@ public class ProductComponentAndroid extends ProductComponent {
 
     @Override
     public BigDecimal getPrice() {
-        androidService.swipe(price);
-
+        swipe(price);
         String raw = price.getAttribute("text").replace("$", "").trim();
         return new BigDecimal(raw);
     }

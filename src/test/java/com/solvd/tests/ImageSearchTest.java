@@ -13,7 +13,7 @@ public class ImageSearchTest extends BaseTest {
         ProductsPage productsPage = login();
         DrawingPage drawingPage = productsPage.openDrawingPage();
         drawingPage.drawSquare();
-        Assert.assertTrue(drawingPage.isSquareVisible());
+        Assert.assertTrue(drawingPage.isSquareVisible(), "image of the drawn square is not visible");
     }
 
 
