@@ -2,6 +2,8 @@ package com.solvd.tests;
 
 import com.solvd.carinanative.page.common.LoginPage;
 import com.solvd.carinanative.page.common.ProductsPage;
+import com.solvd.domain.UserAccount;
+import com.solvd.testUtil.UserService;
 import com.zebrunner.carina.utils.R;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -9,36 +11,30 @@ import org.testng.annotations.Test;
 
 public class LoginTest extends BaseTest {
 
-    private static final String CORRECT_USERNAME = R.TESTDATA.get("CORRECT_USERNAME");
-    private static final String CORRECT_PASSWORD = R.TESTDATA.get("CORRECT_PASSWORD");
-    private static final String INCORRECT_USERNAME = R.TESTDATA.get("INCORRECT_USERNAME");
-    private static final String LOCKED_OUT_USERNAME = R.TESTDATA.get("LOCKED_OUT_USERNAME");
-    private static final String ERROR_MESSAGE_WRONG_INPUT = R.TESTDATA.get("ERROR_MESSAGE_WRONG_INPUT");
-    private static final String ERROR_MESSAGE_LOCKED_OUT = R.TESTDATA.get("ERROR_MESSAGE_LOCKED_OUT");;
-
-
     @DataProvider(name = "loginDataProvider")
     public Object[][] loginDataProvider() {
         return new Object[][]{
-                {CORRECT_USERNAME, CORRECT_PASSWORD, true, ""},
-                {INCORRECT_USERNAME, CORRECT_PASSWORD, false, ERROR_MESSAGE_WRONG_INPUT},
-                {LOCKED_OUT_USERNAME, CORRECT_PASSWORD, false, ERROR_MESSAGE_LOCKED_OUT}
+                {"Correct User", UserService.getDefaultUser(), true, ""},
+                {"Incorrect User", UserService.getIncorrectCredentialsUser(), false, UserService.getWrongInputError()},
+                {"Locked Out User", UserService.getLockedOutUser(), false, UserService.getLockedOutError()}
         };
     }
 
-    @Test(dataProvider = "loginDataProvider", description = "Test login functionality")
-    public void verifyLogin(String username, String password, boolean expectedSuccess, String expectedErrorContains) {
+    @Test(dataProvider = "loginDataProvider",
+            description = "login validation")
+    public void verifyLogin(String scenarioName, UserAccount user,
+                            boolean expectedSuccess, String expectedError) {
+
         LoginPage loginPage = openLoginPage();
-        loginPage.login(username, password);
+        loginPage.login(user);
 
         if (expectedSuccess) {
             ProductsPage productsPage = initPage(getDriver(), ProductsPage.class);
-            Assert.assertTrue(productsPage.isPageOpened(), "products page is not opened after login");
-
+            Assert.assertTrue(productsPage.isPageOpened(), scenarioName + ": products page not opened");
         } else {
-            Assert.assertTrue(loginPage.isErrorMessageDisplayed(), "error message is not shown");
-            String errorMessageText = loginPage.getErrorMessageText();
-            Assert.assertTrue(errorMessageText.contains(expectedErrorContains), "error message does not contain expected text: " + expectedErrorContains);
+            Assert.assertTrue(loginPage.isErrorMessageDisplayed(), scenarioName + ": error message not shown");
+            String actualError = loginPage.getErrorMessageText();
+            Assert.assertEquals(actualError, expectedError, scenarioName + ": error message mismatch");
         }
     }
 }
