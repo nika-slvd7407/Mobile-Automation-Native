@@ -8,6 +8,7 @@ import com.solvd.carinanative.page.common.DrawingPage;
 import com.solvd.carinanative.page.common.GeoLocationPage;
 import com.solvd.carinanative.page.common.ProductsPage;
 import com.solvd.carinanative.page.common.WebViewPage;
+import com.solvd.carinanative.page.pageenum.SortType;
 import com.solvd.util.WaitUtil;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
@@ -61,7 +62,7 @@ public class ProductsPageIOS extends ProductsPage {
     }
 
     @Override
-    public CartPage pressCartButton() {
+    public CartPage clickCartButton() {
         cartButton.click();
         return initPage(getDriver(), CartPage.class);
     }
@@ -79,25 +80,29 @@ public class ProductsPageIOS extends ProductsPage {
     @Override
     public ProductsPage sortBy(SortType sortType) {
         sortButton.click();
-        sortOption.format(getSortLabel(sortType)).click();
+        sortOption.format(sortType.getLabel()).click();
         return initPage(getDriver(), ProductsPage.class);
     }
 
     @Override
-    public boolean areItemsSortedByName() {
-        List<String> actualTitles = new ArrayList<>();
+    public boolean areItemsSortedByName(SortType sortType) {
+        List<String> actual = new ArrayList<>();
         for (ProductComponentIOS product : getProducts()) {
-            actualTitles.add(product.getTitle());
+            actual.add(product.getTitle());
         }
 
-        List<String> sortedTitles = new ArrayList<>(actualTitles);
-        Collections.sort(sortedTitles);
+        List<String> sorted = new ArrayList<>(actual);
+        Collections.sort(sorted);
 
-        return actualTitles.equals(sortedTitles);
+        if (!sortType.isAscending()) {
+            Collections.reverse(sorted);
+        }
+
+        return actual.equals(sorted);
     }
 
     @Override
-    public boolean areItemsSortedByPrice() {
+    public boolean areItemsSortedByPrice(SortType sortType) {
         List<BigDecimal> actual = new ArrayList<>();
         for (ProductComponentIOS product : getProducts()) {
             actual.add(product.getPrice());
@@ -105,6 +110,10 @@ public class ProductsPageIOS extends ProductsPage {
 
         List<BigDecimal> sorted = new ArrayList<>(actual);
         Collections.sort(sorted);
+
+        if (!sortType.isAscending()) {
+            Collections.reverse(sorted);
+        }
 
         return actual.equals(sorted);
     }
@@ -125,16 +134,5 @@ public class ProductsPageIOS extends ProductsPage {
     public DrawingPage openDrawingPage() {
         navigationSidebarComponent.openMenuItem(NavigationSidebarComponent.MenuOption.DRAWING);
        return initPage(getDriver(), DrawingPage.class);
-    }
-
-    private String getSortLabel(SortType sortType) {
-        switch (sortType) {
-            case NAME:
-                return "Name (A to Z)";
-            case PRICE:
-                return "Price (low to high)";
-            default:
-                throw new IllegalArgumentException("Unsupported sort type: " + sortType);
-        }
     }
 }

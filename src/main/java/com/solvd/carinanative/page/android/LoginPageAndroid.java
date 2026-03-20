@@ -23,7 +23,7 @@ public class LoginPageAndroid extends LoginPage {
     @ExtendedFindBy(accessibilityId = "test-LOGIN")
     private ExtendedWebElement loginButton;
 
-    @FindBy(xpath = "//android.view.ViewGroup[@content-desc=\"test-Error message\"]//*")
+    @ExtendedFindBy(accessibilityId = "test-Error message")
     private ExtendedWebElement errorMessage;
 
     public LoginPageAndroid(WebDriver driver) {
@@ -47,8 +47,7 @@ public class LoginPageAndroid extends LoginPage {
 
     @Override
     public String getErrorMessageText() {
-     return errorMessage.getText().trim();
+        return errorMessage.getText().trim();
     }
-
 
 }

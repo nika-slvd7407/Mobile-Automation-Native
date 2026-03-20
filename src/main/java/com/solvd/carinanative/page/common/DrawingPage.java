@@ -3,7 +3,7 @@ package com.solvd.carinanative.page.common;
 import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
 
-public abstract class DrawingPage extends UtilsPage {
+public abstract class DrawingPage extends AbstractMobilePage {
 
     public DrawingPage(WebDriver driver) {
         super(driver);

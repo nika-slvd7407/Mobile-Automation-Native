@@ -22,7 +22,6 @@ public class DrawingPageAndroid extends DrawingPage {
     @ExtendedFindBy(image = "square.png")
     private ExtendedWebElement square;
 
-
     public DrawingPageAndroid(WebDriver driver) {
         super(driver);
         setUiLoadedMarker(container);

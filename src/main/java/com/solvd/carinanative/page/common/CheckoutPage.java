@@ -12,7 +12,7 @@ public abstract class CheckoutPage extends AbstractPage {
 
     public abstract void fillForm(User user);
 
-    public abstract ConfirmationPage pressContinue();
+    public abstract ConfirmationPage clickContiniueButton();
 
     public abstract boolean isErrorMessagePresent();
 }

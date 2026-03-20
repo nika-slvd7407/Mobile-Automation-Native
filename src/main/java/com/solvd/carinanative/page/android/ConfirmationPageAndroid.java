@@ -22,7 +22,7 @@ public class ConfirmationPageAndroid extends ConfirmationPage {
     }
 
     @Override
-    public NotificationPage pressFinishButton() {
+    public NotificationPage clickFinishButton() {
         swipe(finishButton);
         finishButton.click();
         return initPage(getDriver(), NotificationPage.class);

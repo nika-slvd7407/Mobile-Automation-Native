@@ -16,5 +16,5 @@ public abstract class CartPage extends AbstractPage {
 
     public abstract List<ExtendedWebElement> getProductNames();
 
-    public abstract CheckoutPage pressCheckoutButton();
+    public abstract CheckoutPage clickCheckoutButton();
 }

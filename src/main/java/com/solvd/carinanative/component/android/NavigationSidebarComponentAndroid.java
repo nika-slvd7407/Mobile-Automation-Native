@@ -1,7 +1,6 @@
 package com.solvd.carinanative.component.android;
 
 import com.solvd.carinanative.component.common.NavigationSidebarComponent;
-import com.solvd.carinanative.page.common.UtilsPage;
 import com.solvd.util.MobileContextUtils;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;

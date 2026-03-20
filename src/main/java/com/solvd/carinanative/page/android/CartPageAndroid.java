@@ -34,7 +34,7 @@ public class CartPageAndroid extends CartPage {
     }
 
     @Override
-    public CheckoutPage pressCheckoutButton() {
+    public CheckoutPage clickCheckoutButton() {
         checkoutButton.click();
         return initPage(getDriver(), CheckoutPage.class);
     }

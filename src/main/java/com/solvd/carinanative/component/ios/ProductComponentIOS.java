@@ -14,17 +14,13 @@ import java.math.BigDecimal;
 @DeviceType(pageType = DeviceType.Type.IOS_PHONE, parentClass = ProductComponent.class)
 public class ProductComponentIOS extends ProductComponent {
 
-    @FindBy(xpath = ".//*/*[1]/*[2]")
+    @FindBy(xpath = ".//*[@name='test-Item title']")
     private ExtendedWebElement title;
 
     @ExtendedFindBy(accessibilityId = "test-ADD TO CART")
     private ExtendedWebElement addToCartButton;
 
-    //those price/title xpath are the best i can do))
-    // there are no parameters to aaccess those tegs normally
-    // ik that this is terrible practice
-
-    @FindBy(xpath = ".//*/*[2]/*[2]")
+    @FindBy(xpath = ".//*[@name='test-Price']")
     private ExtendedWebElement price;
 
     public ProductComponentIOS(WebDriver driver, SearchContext searchContext) {

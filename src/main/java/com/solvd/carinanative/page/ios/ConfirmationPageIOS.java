@@ -21,9 +21,8 @@ public class ConfirmationPageIOS extends ConfirmationPage {
     }
 
     @Override
-    public NotificationPage pressFinishButton() {
-        AndroidService androidService = new AndroidService();
-        androidService.swipe(finishButton);
+    public NotificationPage clickFinishButton() {
+        swipe(finishButton);
         finishButton.click();
         return initPage(getDriver(), NotificationPage.class);
     }

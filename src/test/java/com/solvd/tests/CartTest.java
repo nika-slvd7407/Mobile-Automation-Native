@@ -2,11 +2,9 @@ package com.solvd.tests;
 
 import com.solvd.carinanative.page.common.CartPage;
 import com.solvd.carinanative.page.common.CheckoutPage;
-import com.solvd.carinanative.page.common.ConfirmationPage;
 import com.solvd.carinanative.page.common.NotificationPage;
 import com.solvd.carinanative.page.common.ProductsPage;
 import com.solvd.testUtil.UserService;
-import com.zebrunner.carina.utils.R;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -21,7 +19,7 @@ public class CartTest extends BaseTest {
         productsPage.addProductByIndex(INDEX);
         String productToAdd = productsPage.getItemTitleByIndex(INDEX);
 
-        CartPage cartPage = productsPage.pressCartButton();
+        CartPage cartPage = productsPage.clickCartButton();
         String itemInCart = cartPage.getCartItemByIndex(0);
         Assert.assertEquals(itemInCart, productToAdd, "the cart contains wrong item" +
                 " expected: " + productToAdd + " actual: " + itemInCart);
@@ -32,11 +30,11 @@ public class CartTest extends BaseTest {
         ProductsPage productsPage = login();
         productsPage.addProductByIndex(INDEX);
 
-        CartPage cartPage = productsPage.pressCartButton();
-        CheckoutPage checkoutPage = cartPage.pressCheckoutButton();
+        CartPage cartPage = productsPage.clickCartButton();
+        CheckoutPage checkoutPage = cartPage.clickCheckoutButton();
 
         checkoutPage.fillForm(UserService.getUser());
-       NotificationPage notificationPage = checkoutPage.pressContinue().pressFinishButton();
+       NotificationPage notificationPage = checkoutPage.clickContiniueButton().clickFinishButton();
 
        Assert.assertTrue(notificationPage.isPageOpened(), "final confirmation page is not opened");
     }
@@ -46,11 +44,11 @@ public class CartTest extends BaseTest {
         ProductsPage productsPage = login();
         productsPage.addProductByIndex(INDEX);
 
-        CartPage cartPage = productsPage.pressCartButton();
-        CheckoutPage checkoutPage = cartPage.pressCheckoutButton();
+        CartPage cartPage = productsPage.clickCartButton();
+        CheckoutPage checkoutPage = cartPage.clickCheckoutButton();
 
         checkoutPage.fillForm(UserService.getIncorrectUser());
-        checkoutPage.pressContinue();
+        checkoutPage.clickContiniueButton();
 
         Assert.assertTrue(checkoutPage.isErrorMessagePresent(), "error message is not present");
     }

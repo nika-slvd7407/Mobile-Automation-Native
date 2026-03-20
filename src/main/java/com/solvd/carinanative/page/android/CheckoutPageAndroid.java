@@ -41,13 +41,13 @@ public class CheckoutPageAndroid extends CheckoutPage {
     }
 
     @Override
-    public ConfirmationPage pressContinue() {
+    public ConfirmationPage clickContiniueButton() {
         continueButton.click();
         return initPage(getDriver(), ConfirmationPage.class);
     }
 
     @Override
     public boolean isErrorMessagePresent() {
-       return errorMessege.isVisible();
+       return errorMessege.isElementPresent();
     }
 }

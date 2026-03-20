@@ -40,7 +40,7 @@ public class CheckoutPageIOS extends CheckoutPage {
     }
 
     @Override
-    public ConfirmationPage pressContinue() {
+    public ConfirmationPage clickContiniueButton() {
         continueButton.click();
         return initPage(getDriver(), ConfirmationPage.class);
     }

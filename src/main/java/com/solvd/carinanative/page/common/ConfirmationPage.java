@@ -10,5 +10,5 @@ public abstract class ConfirmationPage extends AbstractPage implements IMobileUt
         super(driver);
     }
 
-    public abstract NotificationPage pressFinishButton();
+    public abstract NotificationPage clickFinishButton();
 }

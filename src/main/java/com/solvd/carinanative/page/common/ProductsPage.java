@@ -1,12 +1,8 @@
 package com.solvd.carinanative.page.common;
 
-import com.solvd.carinanative.component.common.ProductComponent;
-import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import com.solvd.carinanative.page.pageenum.SortType;
 import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.FindBy;
-
-import java.util.List;
 
 public abstract class ProductsPage extends AbstractPage {
 
@@ -16,7 +12,7 @@ public abstract class ProductsPage extends AbstractPage {
 
     public abstract void addProductByIndex(int index);
 
-    public abstract CartPage pressCartButton();
+    public abstract CartPage clickCartButton();
 
     public abstract String getItemTitleByIndex(int index);
 
@@ -24,9 +20,9 @@ public abstract class ProductsPage extends AbstractPage {
 
     public abstract ProductsPage sortBy(SortType sortType);
 
-    public abstract boolean areItemsSortedByName();
+    public abstract boolean areItemsSortedByName(SortType sortType);
 
-    public abstract boolean areItemsSortedByPrice();
+    public abstract boolean areItemsSortedByPrice(SortType sortType);
 
     public abstract GeoLocationPage openGeoLocation();
 
@@ -34,8 +30,4 @@ public abstract class ProductsPage extends AbstractPage {
 
     public abstract DrawingPage openDrawingPage();
 
-    public enum SortType {
-        NAME,
-        PRICE
-    }
 }

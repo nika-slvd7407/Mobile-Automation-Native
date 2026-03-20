@@ -8,11 +8,11 @@ import com.solvd.carinanative.page.common.DrawingPage;
 import com.solvd.carinanative.page.common.GeoLocationPage;
 import com.solvd.carinanative.page.common.ProductsPage;
 import com.solvd.carinanative.page.common.WebViewPage;
+import com.solvd.carinanative.page.pageenum.SortType;
 import com.solvd.util.WaitUtil;
 import com.zebrunner.carina.utils.factory.DeviceType;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.locator.ExtendedFindBy;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
@@ -24,7 +24,7 @@ import java.util.List;
 @DeviceType(pageType = DeviceType.Type.ANDROID_PHONE, parentClass = ProductsPage.class)
 public class ProductsPageAndroid extends ProductsPage {
 
-    @FindBy(xpath = "//android.view.ViewGroup[contains (@content-desc, 'test-Item')]")
+    @FindBy(xpath = "//android.view.ViewGroup[contains(@content-desc, 'test-Item')]")
     private List<ProductComponentAndroid> products;
 
     @ExtendedFindBy(androidUIAutomator = "new UiSelector().description(\"test-Cart drop zone\").childSelector(new UiSelector().className(\"android.widget.TextView\"))")
@@ -36,8 +36,11 @@ public class ProductsPageAndroid extends ProductsPage {
     @ExtendedFindBy(androidUIAutomator = "new UiSelector().description(\"test-Cart\")")
     private ExtendedWebElement cartButton;
 
-    @FindBy(xpath = "//*[@content-desc=\"test-Modal Selector Button\"]")
+    @FindBy(xpath = "//*[@content-desc='test-Modal Selector Button']")
     private ExtendedWebElement sortButton;
+
+    @FindBy(xpath = ".//android.widget.TextView[@text='%s']")
+    private ExtendedWebElement sortOption;
 
     @ExtendedFindBy(accessibilityId = "test-Menu")
     private ExtendedWebElement menuButton;
@@ -58,7 +61,7 @@ public class ProductsPageAndroid extends ProductsPage {
     }
 
     @Override
-    public CartPage pressCartButton() {
+    public CartPage clickCartButton() {
         cartButton.click();
         return initPage(getDriver(), CartPage.class);
     }
@@ -76,34 +79,40 @@ public class ProductsPageAndroid extends ProductsPage {
     @Override
     public ProductsPage sortBy(SortType sortType) {
         sortButton.click();
-        findExtendedWebElement(getSortOption(sortType)).click();
+        sortOption.format(sortType.getLabel()).click();
         return initPage(getDriver(), ProductsPage.class);
     }
 
     @Override
-    public boolean areItemsSortedByName() {
-        List<String> actualTitles = new ArrayList<>();
+    public boolean areItemsSortedByName(SortType sortType) {
+        List<String> actual = new ArrayList<>();
         for (ProductComponentAndroid product : getProducts()) {
-            actualTitles.add(product.getTitle());
+            actual.add(product.getTitle());
         }
 
-        List<String> sortedTitles = new ArrayList<>(actualTitles);
-        Collections.sort(sortedTitles);
+        List<String> sorted = new ArrayList<>(actual);
+        Collections.sort(sorted);
 
-        return actualTitles.equals(sortedTitles);
+        if (!sortType.isAscending()) {
+            Collections.reverse(sorted);
+        }
+
+        return actual.equals(sorted);
     }
 
     @Override
-    public boolean areItemsSortedByPrice() {
+    public boolean areItemsSortedByPrice(SortType sortType) {
         List<BigDecimal> actual = new ArrayList<>();
-        List<ProductComponentAndroid> allProducts = getProducts();
-        for (int i = 0; i < allProducts.size(); i++) {
-            ProductComponentAndroid product = allProducts.get(i);
+        for (ProductComponentAndroid product : getProducts()) {
             actual.add(product.getPrice());
         }
 
         List<BigDecimal> sorted = new ArrayList<>(actual);
         Collections.sort(sorted);
+
+        if (!sortType.isAscending()) {
+            Collections.reverse(sorted);
+        }
 
         return actual.equals(sorted);
     }
@@ -125,17 +134,4 @@ public class ProductsPageAndroid extends ProductsPage {
         navigationSidebarComponent.openMenuItem(NavigationSidebarComponent.MenuOption.DRAWING);
         return initPage(getDriver(), DrawingPage.class);
     }
-
-
-    private By getSortOption(SortType sortType) {
-        switch (sortType) {
-            case NAME:
-                return By.xpath("//*[@text='Name (A to Z)']");
-            case PRICE:
-                return By.xpath("//*[@text='Price (low to high)']");
-            default:
-                throw new IllegalArgumentException("Unsupported sort type: " + sortType);
-        }
-    }
-
 }
