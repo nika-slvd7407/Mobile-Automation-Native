@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="suite">
+    <test name="native tests android">
+        <classes>
+            <class name="com.solvd.tests.LoginTest"/>
+            <class name="com.solvd.tests.CartTest"/>
+            <class name="com.solvd.tests.SearchTest"/>
+            <class name="com.solvd.tests.GeoLocationTest"/>
+            <class name="com.solvd.tests.WebViewTest"/>
+        </classes>
+    </test>
+</suite>
